@@ -16,9 +16,9 @@
 
 package nl.knaw.dans.virusscan;
 
-import io.dropwizard.Application;
 import io.dropwizard.client.JerseyClientBuilder;
-import io.dropwizard.setup.Environment;
+import io.dropwizard.core.Application;
+import io.dropwizard.core.setup.Environment;
 import nl.knaw.dans.virusscan.core.service.ClamdServiceImpl;
 import nl.knaw.dans.virusscan.core.service.DatasetResumeTaskFactoryImpl;
 import nl.knaw.dans.virusscan.core.service.DatasetScanTaskFactoryImpl;
