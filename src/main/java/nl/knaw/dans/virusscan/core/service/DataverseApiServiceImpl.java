@@ -21,6 +21,7 @@ import nl.knaw.dans.lib.dataverse.DataverseException;
 import nl.knaw.dans.lib.dataverse.model.file.FileMeta;
 import nl.knaw.dans.lib.dataverse.model.workflow.ResumeMessage;
 import nl.knaw.dans.virusscan.core.config.DataverseConfig;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,9 +63,9 @@ public class DataverseApiServiceImpl implements DataverseApiService {
     }
 
     @Override
-    public InputStream getFile(int fileId) throws IOException, DataverseException {
+    public <T> T getFile(int fileId, HttpClientResponseHandler<T> handler) throws IOException, DataverseException {
         log.trace("Getting file with id {}", fileId);
-        return getDataverseClient().basicFileAccess(fileId).getFile().getEntity().getContent();
+        return getDataverseClient().basicFileAccess(fileId).getFile(handler);
     }
 
     @Override

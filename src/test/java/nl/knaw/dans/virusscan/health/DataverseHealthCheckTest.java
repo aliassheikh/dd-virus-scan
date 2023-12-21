@@ -40,7 +40,7 @@ class DataverseHealthCheckTest {
     void checkUnsuccessful() throws Exception {
 
         var service = Mockito.mock(DataverseApiService.class);
-        Mockito.doThrow(new DataverseException(500, "Broken", null))
+        Mockito.doThrow(new DataverseException(500, "Broken"))
             .when(service).checkConnection();
 
         var result = new DataverseHealthCheck(service).check();

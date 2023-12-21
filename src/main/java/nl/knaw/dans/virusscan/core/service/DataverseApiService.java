@@ -17,6 +17,7 @@ package nl.knaw.dans.virusscan.core.service;
 
 import nl.knaw.dans.lib.dataverse.DataverseException;
 import nl.knaw.dans.lib.dataverse.model.file.FileMeta;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +27,7 @@ public interface DataverseApiService {
 
     List<FileMeta> listFiles(String datasetId, String invocationId, String version) throws IOException, DataverseException;
 
-    InputStream getFile(int fileId) throws IOException, DataverseException;
+    <T> T getFile(int fileId, HttpClientResponseHandler<T> handler) throws IOException, DataverseException;
 
     void completeWorkflow(String invocationId, String reason, String message) throws IOException, DataverseException;
 

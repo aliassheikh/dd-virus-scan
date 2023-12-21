@@ -22,17 +22,18 @@ import nl.knaw.dans.virusscan.core.task.DatasetScanTask;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class DatasetScanTaskTest {
+import static org.mockito.AdditionalMatchers.not;
+import static org.mockito.ArgumentMatchers.eq;
 
+class DatasetScanTaskTest {
     @Test
-    void runSuccessful() throws IOException, DataverseException {
+    void runNoVirusFound() throws IOException, DataverseException {
         var dataverseApiService = Mockito.mock(DataverseApiService.class);
         var virusScanner = Mockito.mock(VirusScanner.class);
         var datasetResumeTaskFactory = Mockito.mock(DatasetResumeTaskFactory.class);
@@ -48,10 +49,7 @@ class DatasetScanTaskTest {
         Mockito.when(dataverseApiService.listFiles(Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(result.getData());
 
-        Mockito.when(dataverseApiService.getFile(Mockito.anyInt()))
-            .thenReturn(new ByteArrayInputStream("test".getBytes()));
-
-        Mockito.when(virusScanner.scanForVirus(Mockito.any()))
+        Mockito.when(dataverseApiService.getFile(Mockito.anyInt(), Mockito.any()))
             .thenReturn(new ArrayList<>());
 
         var task = new DatasetScanTask(dataverseApiService, virusScanner, payload, datasetResumeTaskFactory);
@@ -62,11 +60,11 @@ class DatasetScanTaskTest {
         expectedPayload.setInvocationId("invocation_id");
         expectedPayload.setMatches(new HashMap<>());
 
-        Mockito.verify(datasetResumeTaskFactory).completeWorkflow(Mockito.eq(expectedPayload));
+        Mockito.verify(datasetResumeTaskFactory).completeWorkflow(eq(expectedPayload));
     }
 
     @Test
-    void runFailed() throws IOException, DataverseException {
+    void runFoundVirusInFirstFile() throws IOException, DataverseException {
         var dataverseApiService = Mockito.mock(DataverseApiService.class);
         var virusScanner = Mockito.mock(VirusScanner.class);
         var datasetResumeTaskFactory = Mockito.mock(DatasetResumeTaskFactory.class);
@@ -83,11 +81,10 @@ class DatasetScanTaskTest {
         Mockito.when(dataverseApiService.listFiles(Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(data);
 
-        Mockito.when(dataverseApiService.getFile(Mockito.anyInt()))
-            .thenReturn(new ByteArrayInputStream("test".getBytes()));
+        Mockito.when(dataverseApiService.getFile(eq(4), Mockito.any()))
+            .thenReturn(List.of("virus!"));
 
-        Mockito.when(virusScanner.scanForVirus(Mockito.any()))
-            .thenReturn(List.of("virus!"))
+        Mockito.when(dataverseApiService.getFile(not(eq(4)), Mockito.any()))
             .thenReturn(new ArrayList<>());
 
         var task = new DatasetScanTask(dataverseApiService, virusScanner, payload, datasetResumeTaskFactory);
@@ -98,7 +95,7 @@ class DatasetScanTaskTest {
         expectedPayload.setInvocationId("invocation_id");
         expectedPayload.setMatches(Map.of(data.get(0), List.of("virus!")));
 
-        Mockito.verify(datasetResumeTaskFactory).completeWorkflow(Mockito.eq(expectedPayload));
+        Mockito.verify(datasetResumeTaskFactory).completeWorkflow(eq(expectedPayload));
 
     }
 
