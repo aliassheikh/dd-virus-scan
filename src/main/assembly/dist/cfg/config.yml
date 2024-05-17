@@ -86,6 +86,8 @@ logging:
       archive: false
       timeZone: system
       currentLogFilename: /var/opt/dans.knaw.nl/log/dd-virus-scan/dd-virus-scan.log
+  loggers:
+    'org.hibernate.engine.internal.StatisticalLoggingSessionEventListener': 'OFF'
 
 health:
   delayedShutdownHandlerEnabled: false
