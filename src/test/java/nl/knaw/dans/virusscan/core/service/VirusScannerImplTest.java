@@ -15,7 +15,7 @@
  */
 package nl.knaw.dans.virusscan.core.service;
 
-import nl.knaw.dans.virusscan.core.config.VirusScannerConfig;
+import nl.knaw.dans.virusscan.config.VirusScannerConfig;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

@@ -15,7 +15,7 @@
  */
 package nl.knaw.dans.virusscan.core.service;
 
-import nl.knaw.dans.virusscan.core.config.ResumeTasksConfig;
+import nl.knaw.dans.virusscan.config.ResumeTasksConfig;
 import nl.knaw.dans.virusscan.core.model.DatasetResumeTaskPayload;
 import nl.knaw.dans.virusscan.core.task.DatasetResumeTask;
 import org.junit.jupiter.api.Test;

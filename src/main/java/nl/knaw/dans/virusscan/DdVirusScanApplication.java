@@ -16,19 +16,19 @@
 
 package nl.knaw.dans.virusscan;
 
-import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.core.Application;
 import io.dropwizard.core.setup.Environment;
+import nl.knaw.dans.lib.util.DataverseHealthCheck;
+import nl.knaw.dans.virusscan.config.DdVirusScanConfig;
 import nl.knaw.dans.virusscan.core.service.ClamdServiceImpl;
 import nl.knaw.dans.virusscan.core.service.DatasetResumeTaskFactoryImpl;
 import nl.knaw.dans.virusscan.core.service.DatasetScanTaskFactoryImpl;
 import nl.knaw.dans.virusscan.core.service.DataverseApiServiceImpl;
 import nl.knaw.dans.virusscan.core.service.VirusScannerImpl;
 import nl.knaw.dans.virusscan.health.ClamdHealthCheck;
-import nl.knaw.dans.virusscan.health.DataverseHealthCheck;
 import nl.knaw.dans.virusscan.resource.InvokeResourceImpl;
 
-public class DdVirusScanApplication extends Application<DdVirusScanConfiguration> {
+public class DdVirusScanApplication extends Application<DdVirusScanConfig> {
 
     public static void main(final String[] args) throws Exception {
         new DdVirusScanApplication().run(args);
@@ -36,18 +36,16 @@ public class DdVirusScanApplication extends Application<DdVirusScanConfiguration
 
     @Override
     public String getName() {
-        return "Dd Virus Scan";
+        return "DD Virus Scan";
     }
 
     @Override
-    public void run(final DdVirusScanConfiguration configuration, final Environment environment) {
-        final var client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration())
-            .build(getName());
-
+    public void run(final DdVirusScanConfig configuration, final Environment environment) {
         var scanDatasetTaskQueue = configuration.getVirusscanner().getScanDatasetTaskQueue().build(environment);
         var resumeDatasetTaskQueue = configuration.getVirusscanner().getResumeDatasetTaskQueue().build(environment);
         var clamdService = new ClamdServiceImpl(configuration.getVirusscanner().getClamd());
-        var dataverseApiService = new DataverseApiServiceImpl(configuration.getDataverse(), client);
+        var dataverseClient = configuration.getDataverse().build(environment, "dd-virus-scan/dataverse");
+        var dataverseApiService = new DataverseApiServiceImpl(dataverseClient);
         var virusScanner = new VirusScannerImpl(configuration.getVirusscanner(), clamdService);
 
         var datasetResumeTaskFactory = new DatasetResumeTaskFactoryImpl(dataverseApiService, resumeDatasetTaskQueue, configuration.getVirusscanner().getResumeTasks());
@@ -58,6 +56,6 @@ public class DdVirusScanApplication extends Application<DdVirusScanConfiguration
         environment.jersey().register(resource);
 
         environment.healthChecks().register("Clamd", new ClamdHealthCheck(clamdService));
-        environment.healthChecks().register("Dataverse", new DataverseHealthCheck(dataverseApiService));
+        environment.healthChecks().register("Dataverse", new DataverseHealthCheck(dataverseClient));
     }
 }

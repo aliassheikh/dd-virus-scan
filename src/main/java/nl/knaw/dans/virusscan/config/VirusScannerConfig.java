@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.knaw.dans.virusscan.core.config;
+package nl.knaw.dans.virusscan.config;
 
 import nl.knaw.dans.lib.util.ExecutorServiceFactory;
-import nl.knaw.dans.virusscan.core.config.validation.ValidClamdBufferSize;
+import nl.knaw.dans.virusscan.config.validation.ValidClamdBufferSize;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.knaw.dans.virusscan.core.config.validation;
+package nl.knaw.dans.virusscan.config.validation;
 
-import nl.knaw.dans.virusscan.core.config.ClamdConfig;
+import nl.knaw.dans.virusscan.config.ClamdConfig;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

@@ -15,7 +15,7 @@
  */
 package nl.knaw.dans.virusscan.core.service;
 
-import nl.knaw.dans.virusscan.core.config.ClamdConfig;
+import nl.knaw.dans.virusscan.config.ClamdConfig;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

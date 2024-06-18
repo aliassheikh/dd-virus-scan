@@ -17,7 +17,7 @@ package nl.knaw.dans.virusscan.core.task;
 
 import nl.knaw.dans.lib.dataverse.DataverseException;
 import nl.knaw.dans.lib.dataverse.model.file.FileMeta;
-import nl.knaw.dans.virusscan.core.config.ResumeTasksConfig;
+import nl.knaw.dans.virusscan.config.ResumeTasksConfig;
 import nl.knaw.dans.virusscan.core.model.DatasetResumeTaskPayload;
 import nl.knaw.dans.virusscan.core.service.DataverseApiService;
 import org.slf4j.Logger;

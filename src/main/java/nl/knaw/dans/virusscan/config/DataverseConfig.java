@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.knaw.dans.virusscan.core.config;
+package nl.knaw.dans.virusscan.config;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

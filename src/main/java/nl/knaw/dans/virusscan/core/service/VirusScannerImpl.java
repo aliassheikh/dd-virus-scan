@@ -15,7 +15,7 @@
  */
 package nl.knaw.dans.virusscan.core.service;
 
-import nl.knaw.dans.virusscan.core.config.VirusScannerConfig;
+import nl.knaw.dans.virusscan.config.VirusScannerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

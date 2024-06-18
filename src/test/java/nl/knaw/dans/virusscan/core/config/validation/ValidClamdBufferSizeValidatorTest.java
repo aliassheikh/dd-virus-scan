@@ -15,7 +15,8 @@
  */
 package nl.knaw.dans.virusscan.core.config.validation;
 
-import nl.knaw.dans.virusscan.core.config.ClamdConfig;
+import nl.knaw.dans.virusscan.config.ClamdConfig;
+import nl.knaw.dans.virusscan.config.validation.ValidClamdBufferSizeValidator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
