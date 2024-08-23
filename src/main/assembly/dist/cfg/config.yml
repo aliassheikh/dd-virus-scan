@@ -73,7 +73,7 @@ virusscanner:
 # requests from multiple Dataverse instances.
 #
 dataverse:
-  apiToken: "09286b45-08ee-43bd-8867-057788afd7bd"
+  apiKey: "changeme"
   baseUrl: "http://localhost:8080/"
 
 #
