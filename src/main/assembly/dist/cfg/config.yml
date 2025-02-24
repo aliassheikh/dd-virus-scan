@@ -1,4 +1,4 @@
-#
+                         #
 # dd-virus-scan configuration file
 #
 server:
@@ -73,7 +73,7 @@ virusscanner:
 # requests from multiple Dataverse instances.
 #
 dataverse:
-  apiKey: "changeme"
+  apiToken: "changeme"
   baseUrl: "http://localhost:8080/"
 
 #
