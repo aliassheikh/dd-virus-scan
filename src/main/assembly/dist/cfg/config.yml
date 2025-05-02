@@ -10,6 +10,13 @@ server:
   adminConnectors:
     - type: http
       port: 20326
+  requestLog:
+    appenders:
+      - type: file
+        archive: false
+        timeZone: system
+        currentLogFilename: /var/opt/dans.knaw.nl/log/dd-virus-scan/request.log
+        logFormat: "%-5p [%d{ISO8601}] %c{0}: %m%n%dwREx"
 
 virusscanner:
   # Location of the clamd daemon
@@ -86,8 +93,12 @@ logging:
       archive: false
       timeZone: system
       currentLogFilename: /var/opt/dans.knaw.nl/log/dd-virus-scan/dd-virus-scan.log
+    - type: console
+      # Used in combination with journald, which already adds the timestamp
+      logFormat: "%-5p %c{0}: %m%n%dwREx"
   loggers:
     'org.hibernate.engine.internal.StatisticalLoggingSessionEventListener': 'OFF'
+
 
 health:
   delayedShutdownHandlerEnabled: false
