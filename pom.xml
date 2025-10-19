@@ -35,7 +35,7 @@
 
     <properties>
         <main-class>nl.knaw.dans.virusscan.DdVirusScanApplication</main-class>
-        <dd-virus-scan-api.version>0.1.0-SNAPSHOT</dd-virus-scan-api.version>
+        <dd-virus-scan-api.version>0.1.0</dd-virus-scan-api.version>
         <dans-build-resources-maven-plugin.version>0.8.0</dans-build-resources-maven-plugin.version>
     </properties>
 
