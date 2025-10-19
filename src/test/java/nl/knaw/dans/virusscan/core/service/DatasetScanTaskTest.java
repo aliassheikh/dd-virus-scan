@@ -16,8 +16,8 @@
 package nl.knaw.dans.virusscan.core.service;
 
 import nl.knaw.dans.lib.dataverse.DataverseException;
+import nl.knaw.dans.virusscan.api.PrePublishWorkflowPayloadDto;
 import nl.knaw.dans.virusscan.core.model.DatasetResumeTaskPayload;
-import nl.knaw.dans.virusscan.core.model.PrePublishWorkflowPayload;
 import nl.knaw.dans.virusscan.core.task.DatasetScanTask;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -37,7 +37,7 @@ class DatasetScanTaskTest {
         var dataverseApiService = Mockito.mock(DataverseApiService.class);
         var virusScanner = Mockito.mock(VirusScanner.class);
         var datasetResumeTaskFactory = Mockito.mock(DatasetResumeTaskFactory.class);
-        var payload = new PrePublishWorkflowPayload();
+        var payload = new PrePublishWorkflowPayloadDto();
         payload.setInvocationId("invocation_id");
         payload.setGlobalId("some_global_id");
         payload.setMajorVersion("1");
@@ -68,7 +68,7 @@ class DatasetScanTaskTest {
         var dataverseApiService = Mockito.mock(DataverseApiService.class);
         var virusScanner = Mockito.mock(VirusScanner.class);
         var datasetResumeTaskFactory = Mockito.mock(DatasetResumeTaskFactory.class);
-        var payload = new PrePublishWorkflowPayload();
+        var payload = new PrePublishWorkflowPayloadDto();
         payload.setInvocationId("invocation_id");
         payload.setGlobalId("some_global_id");
         payload.setMajorVersion("1");

@@ -15,7 +15,7 @@
  */
 package nl.knaw.dans.virusscan.core.service;
 
-import nl.knaw.dans.virusscan.core.model.PrePublishWorkflowPayload;
+import nl.knaw.dans.virusscan.api.PrePublishWorkflowPayloadDto;
 import nl.knaw.dans.virusscan.core.task.DatasetScanTask;
 
 import java.util.concurrent.ExecutorService;
@@ -36,7 +36,7 @@ public class DatasetScanTaskFactoryImpl implements DatasetScanTaskFactory {
     }
 
     @Override
-    public void startTask(PrePublishWorkflowPayload payload) {
+    public void startTask(PrePublishWorkflowPayloadDto payload) {
         var task = new DatasetScanTask(dataverseApiService, virusScanner, payload, datasetResumeTaskFactory);
         executorService.submit(task);
     }

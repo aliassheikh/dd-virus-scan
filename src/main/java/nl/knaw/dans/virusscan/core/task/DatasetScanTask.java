@@ -18,8 +18,8 @@ package nl.knaw.dans.virusscan.core.task;
 
 import nl.knaw.dans.lib.dataverse.DataverseException;
 import nl.knaw.dans.lib.dataverse.model.file.FileMeta;
+import nl.knaw.dans.virusscan.api.PrePublishWorkflowPayloadDto;
 import nl.knaw.dans.virusscan.core.model.DatasetResumeTaskPayload;
-import nl.knaw.dans.virusscan.core.model.PrePublishWorkflowPayload;
 import nl.knaw.dans.virusscan.core.service.DatasetResumeTaskFactory;
 import nl.knaw.dans.virusscan.core.service.DataverseApiService;
 import nl.knaw.dans.virusscan.core.service.DataverseApiServiceImpl;
@@ -36,10 +36,10 @@ public class DatasetScanTask implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(DataverseApiServiceImpl.class);
     private final DataverseApiService dataverseApiService;
     private final VirusScanner virusScanner;
-    private final PrePublishWorkflowPayload payload;
+    private final PrePublishWorkflowPayloadDto payload;
     private final DatasetResumeTaskFactory datasetResumeTaskFactory;
 
-    public DatasetScanTask(DataverseApiService dataverseApiService, VirusScanner virusScanner, PrePublishWorkflowPayload payload, DatasetResumeTaskFactory datasetResumeTaskFactory) {
+    public DatasetScanTask(DataverseApiService dataverseApiService, VirusScanner virusScanner, PrePublishWorkflowPayloadDto payload, DatasetResumeTaskFactory datasetResumeTaskFactory) {
         this.dataverseApiService = dataverseApiService;
         this.virusScanner = virusScanner;
         this.payload = payload;
@@ -58,7 +58,7 @@ public class DatasetScanTask implements Runnable {
 
     void runTask() throws IOException, DataverseException {
         // fetch all files by ID
-        var files = dataverseApiService.listFiles(payload.getGlobalId(), payload.getInvocationId(), payload.getVersion());
+        var files = dataverseApiService.listFiles(payload.getGlobalId(), payload.getInvocationId(), String.format("%s.%s", payload.getMajorVersion(), payload.getMinorVersion()));
         var fileMatches = new HashMap<FileMeta, List<String>>();
 
         for (var file : files) {

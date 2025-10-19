@@ -15,9 +15,10 @@
  */
 package nl.knaw.dans.virusscan.core.service;
 
-import nl.knaw.dans.virusscan.core.model.PrePublishWorkflowPayload;
+
+import nl.knaw.dans.virusscan.api.PrePublishWorkflowPayloadDto;
 
 public interface DatasetScanTaskFactory {
 
-    void startTask(PrePublishWorkflowPayload payload);
+    void startTask(PrePublishWorkflowPayloadDto payload);
 }

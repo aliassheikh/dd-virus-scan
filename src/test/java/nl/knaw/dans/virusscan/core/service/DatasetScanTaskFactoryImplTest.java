@@ -15,7 +15,7 @@
  */
 package nl.knaw.dans.virusscan.core.service;
 
-import nl.knaw.dans.virusscan.core.model.PrePublishWorkflowPayload;
+import nl.knaw.dans.virusscan.api.PrePublishWorkflowPayloadDto;
 import nl.knaw.dans.virusscan.core.task.DatasetScanTask;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -33,7 +33,7 @@ class DatasetScanTaskFactoryImplTest {
 
         var task = new DatasetScanTaskFactoryImpl(dataverseApiService, virusScanner, executorService, datasetResumeTaskFactory);
 
-        var payload = new PrePublishWorkflowPayload();
+        var payload = new PrePublishWorkflowPayloadDto();
         task.startTask(payload);
 
         Mockito.verify(executorService).submit(Mockito.any(DatasetScanTask.class));

@@ -35,7 +35,7 @@ public class ClamdHealthCheck extends HealthCheck {
     protected Result check() {
         try {
             var result = clamdService.ping();
-            log.trace("Result from ClamAV PING request: {}", result);
+            log.debug("Result from ClamAV PING request: {}", result);
 
             if ("PONG\n".equalsIgnoreCase(result)) {
                 return Result.healthy();

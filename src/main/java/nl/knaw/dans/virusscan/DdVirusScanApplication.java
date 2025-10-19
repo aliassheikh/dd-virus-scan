@@ -27,6 +27,7 @@ import nl.knaw.dans.virusscan.core.service.DataverseApiServiceImpl;
 import nl.knaw.dans.virusscan.core.service.VirusScannerImpl;
 import nl.knaw.dans.virusscan.health.ClamdHealthCheck;
 import nl.knaw.dans.virusscan.resource.InvokeResourceImpl;
+import nl.knaw.dans.virusscan.resource.RollbackResourceImpl;
 
 public class DdVirusScanApplication extends Application<DdVirusScanConfig> {
 
@@ -51,9 +52,8 @@ public class DdVirusScanApplication extends Application<DdVirusScanConfig> {
         var datasetResumeTaskFactory = new DatasetResumeTaskFactoryImpl(dataverseApiService, resumeDatasetTaskQueue, configuration.getVirusscanner().getResumeTasks());
         var datasetScanTaskFactory = new DatasetScanTaskFactoryImpl(dataverseApiService, virusScanner, scanDatasetTaskQueue, datasetResumeTaskFactory);
 
-        var resource = new InvokeResourceImpl(datasetScanTaskFactory);
-
-        environment.jersey().register(resource);
+        environment.jersey().register(new InvokeResourceImpl(datasetScanTaskFactory));
+        environment.jersey().register(new RollbackResourceImpl());
 
         environment.healthChecks().register("Clamd", new ClamdHealthCheck(clamdService));
         environment.healthChecks().register("Dataverse", new DataverseHealthCheck(dataverseClient));

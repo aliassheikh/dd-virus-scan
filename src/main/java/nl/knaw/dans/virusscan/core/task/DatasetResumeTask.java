@@ -15,6 +15,7 @@
  */
 package nl.knaw.dans.virusscan.core.task;
 
+import lombok.NonNull;
 import nl.knaw.dans.lib.dataverse.DataverseException;
 import nl.knaw.dans.lib.dataverse.model.file.FileMeta;
 import nl.knaw.dans.virusscan.config.ResumeTasksConfig;
@@ -23,6 +24,7 @@ import nl.knaw.dans.virusscan.core.service.DataverseApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class DatasetResumeTask implements Runnable {
 
     private final ResumeTasksConfig resumeTasksConfig;
 
-    public DatasetResumeTask(DataverseApiService dataverseApiService, DatasetResumeTaskPayload payload, ResumeTasksConfig resumeTasksConfig) {
+    public DatasetResumeTask(@NonNull DataverseApiService dataverseApiService, @NonNull DatasetResumeTaskPayload payload, @NonNull ResumeTasksConfig resumeTasksConfig) {
         this.dataverseApiService = dataverseApiService;
         this.payload = payload;
         this.resumeTasksConfig = resumeTasksConfig;
@@ -64,7 +66,7 @@ public class DatasetResumeTask implements Runnable {
             // now run the task
             try {
                 runTask();
-                log.info("Dataset resume task executed successfully, finishing");
+                log.info("Dataset resume task completed with status {}", payload.getMatches().isEmpty() ? "Success" : "Failure");
                 break;
             }
             catch (IOException | DataverseException e) {

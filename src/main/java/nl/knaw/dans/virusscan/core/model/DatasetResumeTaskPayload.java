@@ -17,60 +17,17 @@ package nl.knaw.dans.virusscan.core.model;
 
 import nl.knaw.dans.lib.dataverse.model.file.FileMeta;
 
+import java.util.*;
+
+import lombok.Data;
+import nl.knaw.dans.lib.dataverse.model.file.FileMeta;
+
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
+@Data
 public class DatasetResumeTaskPayload {
     private String id;
-    private Map<FileMeta, List<String>> matches;
+    private Map<FileMeta, List<String>> matches = new HashMap<>();
     private String invocationId;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Map<FileMeta, List<String>> getMatches() {
-        return matches;
-    }
-
-    public void setMatches(Map<FileMeta, List<String>> matches) {
-        this.matches = matches;
-    }
-
-    public String getInvocationId() {
-        return invocationId;
-    }
-
-    public void setInvocationId(String invocationId) {
-        this.invocationId = invocationId;
-    }
-
-    @Override
-    public String toString() {
-        return "DatasetResumeTaskPayload{" +
-            "id='" + id + '\'' +
-            ", matches=" + matches +
-            ", invocationId='" + invocationId + '\'' +
-            '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        DatasetResumeTaskPayload that = (DatasetResumeTaskPayload) o;
-        return Objects.equals(id, that.id) && Objects.equals(matches, that.matches) && Objects.equals(invocationId, that.invocationId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, matches, invocationId);
-    }
 }

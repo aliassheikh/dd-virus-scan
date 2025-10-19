@@ -17,54 +17,34 @@ package nl.knaw.dans.virusscan.resource;
 
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import io.dropwizard.testing.junit5.ResourceExtension;
-import nl.knaw.dans.virusscan.api.PrePublishWorkflowPayloadDto;
 import nl.knaw.dans.virusscan.core.service.DatasetScanTaskFactory;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
-class InvokeResourceImplTest {
-
-
+public class RollbackResourceImplTest {
     private static final DatasetScanTaskFactory datasetScanTaskFactory = Mockito.mock(DatasetScanTaskFactory.class);
     private static final ResourceExtension EXT = ResourceExtension.builder()
-        .addResource(new InvokeResourceImpl(datasetScanTaskFactory))
-        .build();
+            .addResource(new RollbackResourceImpl())
+            .build();
 
     @BeforeEach
     void beforeEach() {
         Mockito.reset(datasetScanTaskFactory);
     }
 
-    @Test
-    void invokeVirusScan() {
-        var entity = new PrePublishWorkflowPayloadDto();
-        entity.setInvocationId("invocation_id");
-        entity.setGlobalId("global_id");
-        entity.setMajorVersion("3");
-        entity.setMinorVersion("1");
-        entity.setDatasetId("dataset_id");
-
-        try (var response = EXT.target("/invoke").request().post(Entity.entity(entity, MediaType.APPLICATION_JSON_TYPE))) {
+@Test
+    void rollback() throws Exception {
+        try (var response = EXT.target("/rollback").request().post(Entity.json("{}"))) {
             assertEquals(200, response.getStatus());
-
-            Mockito.verify(datasetScanTaskFactory).startTask(Mockito.eq(entity));
+            Mockito.verifyNoInteractions(datasetScanTaskFactory);
         }
     }
-
-    @Test
-    void invokeVirusScanWithWrongPayload() {
-        try (var response = EXT.target("/invoke").request().post(Entity.entity("string", MediaType.APPLICATION_JSON_TYPE))) {
-            assertEquals(400, response.getStatus());
-        }
-    }
-
-
 }

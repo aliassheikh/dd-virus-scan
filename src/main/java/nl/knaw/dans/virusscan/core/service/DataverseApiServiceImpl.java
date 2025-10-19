@@ -33,7 +33,7 @@ public class DataverseApiServiceImpl implements DataverseApiService {
 
     @Override
     public List<FileMeta> listFiles(String datasetId, String invocationId, String version) throws IOException, DataverseException {
-        log.trace("Getting list of files for data set {}, invocation id {} and version :draft", datasetId, invocationId);
+        log.debug("Getting list of files for data set {}, invocation id {} and version :draft", datasetId, invocationId);
         var dataset = client.dataset(datasetId, invocationId);
         var files = dataset.getFiles(":draft");
 
@@ -42,21 +42,21 @@ public class DataverseApiServiceImpl implements DataverseApiService {
 
     @Override
     public <T> T getFile(int fileId, HttpClientResponseHandler<T> handler) throws IOException, DataverseException {
-        log.trace("Getting file with id {}", fileId);
+        log.debug("Getting file with id {}", fileId);
         return client.basicFileAccess(fileId).getFile(handler);
     }
 
     @Override
     public void completeWorkflow(String invocationId, String reason, String message) throws IOException, DataverseException {
         var resumeMessage = new ResumeMessage("Success", reason, message);
-        log.trace("Completing workflow with status Success, invocation id is {}", invocationId);
+        log.info("Completing workflow with status Success, invocation id is {}", invocationId);
         this.client.workflows().resume(invocationId, resumeMessage);
     }
 
     @Override
     public void failWorkflow(String invocationId, String reason, String message) throws IOException, DataverseException {
         var resumeMessage = new ResumeMessage("Failure", reason, message);
-        log.trace("Completing workflow with status Failure, reasin is '{}', message is '{}', invocation id is {}", reason, message, invocationId);
+        log.warn("Completing workflow with status Failure, reason is '{}', message is '{}', invocation id is {}", reason, message, invocationId);
         this.client.workflows().resume(invocationId, resumeMessage);
     }
 

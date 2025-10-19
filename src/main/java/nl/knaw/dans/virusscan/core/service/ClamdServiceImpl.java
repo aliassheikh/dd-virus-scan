@@ -56,7 +56,7 @@ public class ClamdServiceImpl implements ClamdService {
         // create a 4 byte sequence indicating the size of the payload (in network byte order)
         var header = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN).putInt(bufferSize).array();
 
-        //log.trace("Writing buffer size header (value is {}) to output stream", bufferSize);
+        //log.debug("Writing buffer size header (value is {}) to output stream", bufferSize);
         // write the size of the payload
         outputStream.write(header);
         outputStream.write(buffer, 0, bufferSize);
@@ -80,7 +80,7 @@ public class ClamdServiceImpl implements ClamdService {
                 var outputStream = new BufferedOutputStream(socket.getOutputStream());
                 var socketInputStream = socket.getInputStream()) {
 
-                log.trace("Writing zINSTREAM header for batch");
+                log.debug("Writing zINSTREAM header for batch");
                 outputStream.write("zINSTREAM\0".getBytes(StandardCharsets.UTF_8));
                 outputStream.flush();
 
@@ -94,7 +94,7 @@ public class ClamdServiceImpl implements ClamdService {
                 var bufferThreshold = clamdConfig.getChunksize() - clamdConfig.getOverlapsize();
                 var restartThreshold = clamdConfig.getChunksize();
 
-                log.trace("Buffer threshold is {}, restart threshold is {}", bufferThreshold, restartThreshold);
+                log.debug("Buffer threshold is {}, restart threshold is {}", bufferThreshold, restartThreshold);
 
                 while (bytesRead >= 0) {
                     writeChunk(outputStream, buffer, bytesRead);
@@ -127,7 +127,7 @@ public class ClamdServiceImpl implements ClamdService {
                     }
                 }
 
-                log.trace("Total payload written (size was {}), sending final bytes", bytesWritten);
+                log.debug("Total payload written (size was {}), sending final bytes", bytesWritten);
                 // last payload should be 0 length to indicate we are done
                 outputStream.write(new byte[] { 0, 0, 0, 0 });
                 outputStream.flush();
@@ -136,7 +136,7 @@ public class ClamdServiceImpl implements ClamdService {
                 bytesWritten = 0;
 
                 var result = new String(socketInputStream.readAllBytes());
-                log.trace("Completed batch; intermediate result for virus scan: '{}'; overlap buffer size is {}", result, overlapBuffer.length);
+                log.debug("Completed batch; intermediate result for virus scan: '{}'; overlap buffer size is {}", result, overlapBuffer.length);
                 results.add(result);
             }
         }

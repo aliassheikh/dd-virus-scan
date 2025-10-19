@@ -34,16 +34,18 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DatasetResumeTaskTest {
+    private final DataverseApiService dataverseApiServiceMock = Mockito.mock(DataverseApiService.class);
 
     @Test
     void runSuccessful() throws InterruptedException, IOException, DataverseException {
         var config = new ResumeTasksConfig(3, Duration.of(3, ChronoUnit.SECONDS));
-        var datasetResumeTask = new DatasetResumeTask(null, null, config);
+        var datasetResumeTask = new DatasetResumeTask(dataverseApiServiceMock, new DatasetResumeTaskPayload(), config);
         var task = Mockito.spy(datasetResumeTask);
         Mockito.doNothing().when(task).sleep(Mockito.any());
         Mockito.doNothing().when(task).runTask();
 
         task.run();
+
 
         Mockito.verify(task, Mockito.times(1)).runTask();
     }
@@ -51,7 +53,7 @@ class DatasetResumeTaskTest {
     @Test
     void runWithIOExceptions() throws InterruptedException, IOException, DataverseException {
         var config = new ResumeTasksConfig(3, Duration.of(3, ChronoUnit.SECONDS));
-        var datasetResumeTask = new DatasetResumeTask(null, null, config);
+        var datasetResumeTask = new DatasetResumeTask(dataverseApiServiceMock, new DatasetResumeTaskPayload(), config);
         var task = Mockito.spy(datasetResumeTask);
         Mockito.doNothing().when(task).sleep(Mockito.any());
         Mockito.doThrow(IOException.class).when(task).runTask();
@@ -64,7 +66,8 @@ class DatasetResumeTaskTest {
 
     @Test
     void testThreadSleep() throws InterruptedException {
-        var task = new DatasetResumeTask(null, null, null);
+        var datasetResumeTask = new DatasetResumeTask(dataverseApiServiceMock, new DatasetResumeTaskPayload(), new ResumeTasksConfig(3, Duration.of(3, ChronoUnit.SECONDS)));
+        var task = Mockito.spy(datasetResumeTask);
         var duration = Duration.of(1, ChronoUnit.MILLIS);
         assertDoesNotThrow(() -> task.sleep(duration));
     }
@@ -72,7 +75,7 @@ class DatasetResumeTaskTest {
     @Test
     void runWithInterrupted() throws InterruptedException, IOException, DataverseException {
         var config = new ResumeTasksConfig(3, Duration.of(3, ChronoUnit.SECONDS));
-        var datasetResumeTask = new DatasetResumeTask(null, null, config);
+        var datasetResumeTask = new DatasetResumeTask(dataverseApiServiceMock, new DatasetResumeTaskPayload(), config);
         var task = Mockito.spy(datasetResumeTask);
 
         Mockito.doThrow(IOException.class).when(task).runTask();
@@ -134,7 +137,7 @@ class DatasetResumeTaskTest {
 
     @Test
     void payloadGeneration() {
-        var task = new DatasetResumeTask(null, null, null);
+        var task = new DatasetResumeTask(dataverseApiServiceMock, new DatasetResumeTaskPayload(), new ResumeTasksConfig(3, Duration.of(3, ChronoUnit.SECONDS)));
 
         var file1 = new FileMeta();
         file1.setDataFile(new DataFile());
